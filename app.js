@@ -33,6 +33,7 @@ app.configure('development', function(){
 app.get('/', user.main);
 app.get('/users', user.list);
 app.get('/login', user.login_page);
+app.get('/logout', user.logout)
 app.get('/square/refresh', user.refresh);
 
 //posts

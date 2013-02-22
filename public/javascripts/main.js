@@ -7,7 +7,7 @@ $(document).ready(function() {
 	$('#squarestream').load('/square/refresh');
   }
 
-  setInterval(refresh, 2000)
+  setInterval(refresh, 60000)
 
  //wrapper from stack overflow that checks inputs for updates
  $('#new_square input').each(function() {
@@ -38,14 +38,27 @@ $(document).ready(function() {
  	var location = $('.location').val();
  	var comment = $('.comment').val();
  	var url = $('.url').val();
- 	$.post('/upload/square', {
- 		location: location,
- 		comment: comment,
- 		url: url
- 	});
- 	$('input').val('')
- 	refresh
- })
+ 	if (url.indexOf('youtube') !== -1) {
+ 		var cutIndex = url.indexOf('=')+1;
+ 		if (cutIndex > -1) {
+ 		  var subIndex = -(url.length - cutIndex)
+          var youtubeID = url.substr(subIndex, -subIndex);
+ 		}
+ 		$('.alert').fadeOut('fast');
+	 	$.post('/upload/square', {
+	 		location: location,
+	 		comment: comment,
+	 		url: 'http://www.youtube.com/v/' + youtubeID
+	 	});
+	 	$('input').val('')
+	 	refresh();
+ 	}
+ 	else {
+ 		$('div.alert').fadeOut('fast');
+ 		$('#place_error').append('<div class="alert alert-error">Please enter a valid YouTube url!</div>')
+ 	    $('div.alert').fadeOut(2000);	
+ 	}
+ });
 
 $('#create_user').click(function() {
  	var new_username = $('.new_username').val();
@@ -62,22 +75,5 @@ $('#create_user').click(function() {
  		alert('DONE GOOFED')
  	}
 });  
-
-
- // $('#log_in').click(function() {
- // 	console.log('here')
- // 	var username = $('.username').val();
- // 	var password = $('.password').val();
- // 	if (username.length !== 0 || password.length !== 0) {
- //      $.post('/login/action', {
- //        username: username,
- //        password: password
- // 	  });
- // 	  window.location = '/'
- // 	}
- // 	else {
- // 		alert('DONE GOOFED')
- // 	}
- // });
 
 });

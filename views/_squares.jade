@@ -5,7 +5,7 @@ if (squares == false || squares.length == 0)
   h4.center No squares have been posted!
 else
   for square in squares
-      div.square.botborder 
-        h4 #{square.author} was at #{square.location}
+      div.square.botborder
+        h4  #{square.author} was at #{square.location}
         p #{square.comment}
-        p Video URL: #{square.url}
+        embed.square_pad(src=square.url, type="application/x-shockwave-flash", width="420", height="345")

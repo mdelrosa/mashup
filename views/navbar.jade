@@ -5,7 +5,7 @@
           li
             a(href='/') Home
         ul.nav.pull-right#main-menu-right    
-          if (user != 'undefined')
+          if (user == false)
             li
               a(href='/login') Log In!
           else

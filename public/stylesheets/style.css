@@ -8,3 +8,7 @@
 .botborder {
 	border-bottom: 1px solid
 }
+
+.square_pad {
+	padding: 5px 5px 5px 5px;
+}

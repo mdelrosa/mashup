@@ -11,12 +11,12 @@ exports.list = function(req, res){
   res.send("Main Page");
 };
 
-exports.main = function(req, res){
+exports.main = function(req, res) {
 
     Squares.find({}).sort('time').exec(function(err, squareData) {
       if(err) console.log(err)
       else {
-      	if (req.session.user === false) {
+      	if (req.session.user === undefined) {
 	      res.render('index', {
 	  	    title: 'SquareTube',
 		    squares: [],
@@ -24,16 +24,15 @@ exports.main = function(req, res){
 	      });
         }
         else {
-          console.log(req.session.user)
+          console.log(req.session)
           res.render('index', {
           	title: 'SquareTube',
           	squares: squareData,
           	user: req.session.user
-          })
+          });
         }
       }
     });
-
 }
 
 //login exports
@@ -42,10 +41,12 @@ exports.login_page = function(req, res) {
 }
 
 exports.login_action = function(req, res) {
-	console.log(req.body)
-	User.find({'username': req.body.username}).exec(function(err, user) {
+	var name = req.body.username;
+	console.log(req.body);
+	User.findOne({name: name}).exec(function(err, user) {
 		if (req.body.password === user.password) {
-			req.session.user = user.username;
+			console.log(user)
+			req.session.user = user.name;
 			console.log(req.session)
 			return res.redirect('/')
 		}
@@ -55,23 +56,32 @@ exports.login_action = function(req, res) {
 	})
 }
 
+//add a user
 exports.new_user = function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  var new_user = new User({
-  	name: username,
-  	password: password
-  });
-  new_user.save(function(err) {
-  	if (err) console.log('error', err)
-    else {
-    	console.log('new user saved')
-    }
-  });
-  req.session.user = new_user;
-  return res.redirect('/');
+  var confirm_password = req.body.confirm_password;
+  if (password === confirm_password) {
+	var new_user = new User({
+	  name: username,
+	  password: password
+    });
+    new_user.save(function(err) {
+	  if (err) console.log('error', err)
+	  else {
+	    console.log('new user saved')
+	  }
+    });
+	req.session.user = new_user.name;
+	return res.redirect('/');
+  }
+  else {
+  	return res.redirect('/login')
+  }
+
 }
 
+//upload a new square
 exports.upload = function(req, res){
   var squareTime = new Date().getTime() / 1000 * -1;
   console.log('req', req.body)
@@ -90,11 +100,12 @@ exports.upload = function(req, res){
   });
 }
 
+//refresh squares
 exports.refresh = function(req, res) {
   Squares.find({}).sort('time').execFind(function(err, db_squares) {
   if(err) console.log(err)
   else
-  	  if (req.session.user === false) {
+  	  if (req.session.user === undefined) {
         res.render("_squares.jade", {
           squares: false
         });
@@ -105,4 +116,10 @@ exports.refresh = function(req, res) {
       	});
       }
   });
+}
+
+//log user out
+exports.logout = function(req, res) {
+	req.session.destroy();
+	res.redirect('/')
 }
