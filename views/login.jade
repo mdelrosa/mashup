@@ -1,0 +1,36 @@
+extends layout
+
+block content
+
+  include login_navbar.jade
+
+  div.container
+    div.span11
+      div.well
+        h1.center Show your squares
+
+    div.span11
+      div.well
+        div.row
+          div.span5
+            div.well
+              h3.center Please log in!
+              form(method='post', action='/login/action')
+                p Username
+                input(type='text', name='username')
+                p Password
+                input(type='password')
+                br
+                button.btn(type='submit') Log in
+
+          div.span5
+            div.well
+              h3.center Create an account!
+              p Preferred Username
+              input.new_username(type='text')
+              p Password
+              input.new_password(type='password')
+              p Confirm Password
+              input.confirm_password(type='password')
+              br
+              a.btn#create_user Create

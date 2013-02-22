@@ -1,0 +1,32 @@
+extends layout
+
+block content
+
+   include navbar.jade
+
+   div.container
+    div.span11
+      div.well
+        if (user == false)
+          h1.center Please log in!
+        else
+          h1.center Welcome #{user}!
+
+    div.span4
+      if (user != false)
+        div.well#new_square
+          h3 New Square
+          p Where's your square?
+          input.location(type='text')
+          p Comment
+          input.comment(type='text')
+          p Video URL
+          input.url(type='text')
+          a.btn.disabled#square_sub Submit Square!
+      else
+        div.well
+          h4 Log in to submit a square
+
+    div.span7
+      div.well#squarestream
+        include _squares.jade  

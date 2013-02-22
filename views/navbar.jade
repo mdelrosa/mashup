@@ -1,0 +1,13 @@
+.navbar
+    .navbar-inner
+        a.brand(href='/') #{title}
+        ul.nav
+          li
+            a(href='/') Home
+        ul.nav.pull-right#main-menu-right    
+          if (user != 'undefined')
+            li
+              a(href='/login') Log In!
+          else
+            li
+              a(href='/logout') Log Out!
