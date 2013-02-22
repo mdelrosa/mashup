@@ -3,8 +3,7 @@
 // models.js
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://heroku_app12196861:ri6idkj7iik3l96ak122h2oenb@ds053607.mongolab.com:53607/heroku_app12196861' ||
-process.env.MONGOLAB_URI || 'mongodb://localhost/squaretube');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/squaretube');
 
 // set Schema
 Schema = mongoose.Schema;
