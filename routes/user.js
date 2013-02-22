@@ -24,7 +24,6 @@ exports.main = function(req, res) {
 	      });
         }
         else {
-          console.log(req.session)
           res.render('index', {
           	title: 'SquareTube',
           	squares: squareData,
@@ -42,12 +41,9 @@ exports.login_page = function(req, res) {
 
 exports.login_action = function(req, res) {
 	var name = req.body.username;
-	console.log(req.body);
 	User.findOne({name: name}).exec(function(err, user) {
 		if (req.body.password === user.password) {
-			console.log(user)
 			req.session.user = user.name;
-			console.log(req.session)
 			return res.redirect('/')
 		}
 		else {
@@ -84,7 +80,6 @@ exports.new_user = function(req, res) {
 //upload a new square
 exports.upload = function(req, res){
   var squareTime = new Date().getTime() / 1000 * -1;
-  console.log('req', req.body)
   var new_square = new Squares ({
     author: req.session.user,
     location: req.body.location,
